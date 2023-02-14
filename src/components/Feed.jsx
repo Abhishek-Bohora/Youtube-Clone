@@ -1,10 +1,22 @@
 import { useState, useEffect } from "react";
 import { Box, Stack, Typography } from "@mui/material";
-import Sidebar from "./Sidebar";
+import { Sidebar, Videos } from "./";
+import { fetchFromApi } from "../utils/fetchFromApi";
+
 const Feed = () => {
+  const [selectedCategory, setSelectedCategory] = useState("New");
+  const [videos, setVideos] = useState([]);
+
+  useEffect(() => {
+    fetchFromApi(`search?part=snippet&q=${selectedCategory}`).then((data) =>
+      setVideos(data.items)
+    );
+  }, [selectedCategory]);
+
   return (
     // here flexDirection is column for small screen and row for md and higher size screen
     <Stack sx={{ flexDirection: { sx: "column", md: "row" } }}>
+      {/* sidebar Box */}
       <Box
         sx={{
           height: { sx: "auto", md: "92vh" },
@@ -12,7 +24,10 @@ const Feed = () => {
           px: { sx: 0, md: 2 },
         }}
       >
-        <Sidebar />
+        <Sidebar
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
         <Typography
           className="copyright"
           variant="body2"
@@ -20,6 +35,20 @@ const Feed = () => {
         >
           Copyright 2023
         </Typography>
+      </Box>
+      {/* feed Box */}
+      <Box p={2} sx={{ overflowY: "auto", height: "90vh", flex: 2 }}>
+        {/* flex:2 will make this take more space than the sidebar */}
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          mb={2}
+          sx={{ color: "white" }}
+        >
+          {selectedCategory}
+          <span style={{ color: "#FC1503" }}> Videos</span>
+        </Typography>
+        <Videos videos={videos} />
       </Box>
     </Stack>
   );
