@@ -3,7 +3,7 @@ import { CheckCircle } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { demoProfilePicture } from "../utils/constants";
 
-const ChannelCard = ({ channelDetail }) => {
+const ChannelCard = ({ channelDetail, marginTop }) => {
   // console.log(channelDetail);
   return (
     <Box
@@ -15,6 +15,8 @@ const ChannelCard = ({ channelDetail }) => {
         width: { sx: "356px", md: "320px" },
         height: "326px",
         margin: "auto",
+        marginTop, //only used when passed this makes this reusable for other component too for eg: used inside ChannelDetail Component
+        //same ChannelCard component
       }}
     >
       <Link to={`/channel/${channelDetail?.id?.channelId}`}>
